@@ -1,11 +1,11 @@
-import htm from "htm";
-import css from "@styled-system/css";
-import Preact from "preact";
-import render from "preact-render-to-string";
-import { css as gcss } from "glamor";
-import { renderStatic } from "glamor/server";
+const htm = require("htm");
+const css = require("@styled-system/css").css;
+const Preact = require("preact");
+const render = require("preact-render-to-string");
+const gcss = require("glamor").css;
+const renderStatic = require("glamor/server").renderStatic;
 
-const useFancyPony = function ({ theme }) {
+const useThemedHtm = function ({ theme }) {
   function h(type, props, ...children) {
     if (props && props.sx) {
       const styling = css(props.sx)({ theme });
@@ -18,11 +18,14 @@ const useFancyPony = function ({ theme }) {
   return htm.bind(h);
 };
 
-const renderFancyPony = function (TopLevelComponent) {
+const renderThemedHtm = function (TopLevelComponent) {
   let output = renderStatic(function () {
     return render(TopLevelComponent);
   });
   return [output.html, output.css];
 };
 
-export { useFancyPony, renderFancyPony };
+module.exports = {
+  useThemedHtm,
+  renderThemedHtm,
+};
